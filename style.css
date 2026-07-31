@@ -1,8 +1,768 @@
-h1 {
-    color: blue;    
+/* =====================================================================
+   SPENDWISE — STYLESHEET
+   Theme: "Bank Passbook / Ledger" — deep passbook green, cream paper
+   background, mustard-gold accents and a maroon ink-stamp highlight.
+   ===================================================================== */
 
+/* ---------------------------------------------------------------------
+   1. DESIGN TOKENS (CSS variables)
+   Keeping every color/spacing value here means the whole theme can be
+   re-tuned by editing this one block.
+--------------------------------------------------------------------- */
+:root {
+    /* Colors */
+    --color-paper: #F5F1E6;       /* cream page background, like passbook paper */
+    --color-paper-line: #E1D9C4;  /* faint ledger-rule lines on the paper */
+    --color-ink: #1E2B24;         /* near-black green-ink text color */
+    --color-forest: #14432F;      /* deep passbook green — primary brand color */
+    --color-forest-dark: #0D2E20; /* darker shade for hovers / footer */
+    --color-gold: #C89B3C;        /* mustard gold accent */
+    --color-gold-light: #E7C878;  /* lighter gold for hovers/highlights */
+    --color-stamp: #9B3A2E;       /* maroon "ink stamp" color */
+    --color-credit: #2F6B4F;      /* green for "money in" rows */
+    --color-debit: #9B3A2E;       /* maroon for "money out" rows */
+    --color-white: #FFFFFF;
+
+    /* Typography */
+    --font-display: 'Fraunces', serif;         /* headings */
+    --font-body: 'IBM Plex Sans', sans-serif;   /* paragraphs, nav, buttons */
+    --font-mono: 'IBM Plex Mono', monospace;    /* all money figures */
+
+    /* Layout */
+    --max-width: 1160px;
+    --radius: 10px;
+    --shadow-soft: 0 10px 30px rgba(20, 67, 47, 0.12);
+}
+
+/* ---------------------------------------------------------------------
+   2. RESET / BASE STYLES
+--------------------------------------------------------------------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
-    background-color: lightgreen;
+    font-family: var(--font-body);
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    line-height: 1.6;
+    /* Subtle horizontal ledger lines across the whole page for texture */
+    background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 38px,
+        var(--color-paper-line) 39px
+    );
+}
+
+img { max-width: 100%; display: block; }
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+ul { list-style: none; }
+
+.container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Respect users who've asked for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation: none !important; transition: none !important; }
+}
+
+/* ---------------------------------------------------------------------
+   3. BUTTONS (shared across sections)
+--------------------------------------------------------------------- */
+.btn {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 14px 28px;
+    border-radius: var(--radius);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.btn:focus-visible,
+.btn-outline:focus-visible,
+a:focus-visible {
+    outline: 3px solid var(--color-gold);
+    outline-offset: 2px;
+}
+
+.btn-primary {
+    background-color: var(--color-forest);
+    color: var(--color-white);
+}
+.btn-primary:hover {
+    background-color: var(--color-forest-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--color-forest);
+    border: 2px solid var(--color-forest);
+}
+.btn-secondary:hover {
+    background-color: var(--color-forest);
+    color: var(--color-white);
+}
+
+.btn-outline {
+    padding: 8px 18px;
+    border: 2px solid var(--color-forest);
+    border-radius: var(--radius);
+    font-weight: 600;
+}
+
+.btn-small { padding: 10px 20px; font-size: 0.9rem; }
+.btn-large { padding: 18px 36px; font-size: 1.05rem; }
+
+/* ---------------------------------------------------------------------
+   4. NAVBAR
+--------------------------------------------------------------------- */
+.navbar {
+    background-color: var(--color-paper);
+    border-bottom: 2px solid var(--color-forest);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 18px;
+    padding-bottom: 18px;
+}
+
+.logo {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: var(--color-forest);
+}
+.logo-accent { color: var(--color-gold); }
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    font-weight: 500;
+}
+.nav-links a:not(.btn):not(.btn-outline):hover {
+    color: var(--color-gold);
+}
+
+/* Mobile nav toggle — hidden on desktop */
+.nav-toggle { display: none; }
+.nav-burger { display: none; }
+
+/* ---------------------------------------------------------------------
+   5. HERO SECTION
+--------------------------------------------------------------------- */
+.hero {
+    padding: 80px 0 60px;
+}
+
+.hero-container {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.eyebrow {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-stamp);
+    border: 1px solid var(--color-stamp);
+    border-radius: 999px;
+    padding: 5px 14px;
+    margin-bottom: 20px;
+}
+.eyebrow-light { color: var(--color-gold-light); border-color: var(--color-gold-light); }
+
+.hero-copy h1 {
+    font-family: var(--font-display);
+    font-size: 3.2rem;
+    line-height: 1.1;
+    color: var(--color-ink);
+    margin-bottom: 22px;
+}
+
+.hero-highlight {
+    color: var(--color-forest);
+    font-style: italic;
+}
+
+.hero-sub {
+    font-size: 1.1rem;
+    color: #3A4A42;
+    max-width: 46ch;
+    margin-bottom: 32px;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+}
+
+.hero-trust {
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+    color: #52604F;
+}
+.hero-trust strong {
+    font-family: var(--font-mono);
+    color: var(--color-forest);
+    display: block;
+    font-size: 1rem;
+}
+
+/* --- The passbook visual card --- */
+.passbook {
+    position: relative;
+    background-color: var(--color-white);
+    border: 2px solid var(--color-forest);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
+    padding: 26px 24px;
+    /* faint printed ledger lines inside the card too */
+    background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 43px,
+        var(--color-paper-line) 44px
+    );
+}
+
+.passbook-header {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    color: var(--color-forest);
+    border-bottom: 2px dashed var(--color-paper-line);
+    padding-bottom: 12px;
+    margin-bottom: 6px;
+}
+
+.passbook-row {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 14px;
+    align-items: center;
+    padding: 11px 0;
+    font-size: 0.88rem;
+}
+
+.p-desc { color: var(--color-ink); }
+.p-date { font-family: var(--font-mono); color: #7C8B82; font-size: 0.8rem; }
+.p-amt { font-family: var(--font-mono); font-weight: 600; text-align: right; }
+.p-amt.credit { color: var(--color-credit); }
+.p-amt.debit { color: var(--color-debit); }
+
+.passbook-balance {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 12px;
+    padding-top: 14px;
+    border-top: 2px solid var(--color-forest);
+    font-weight: 600;
+}
+.balance-amt {
+    font-family: var(--font-mono);
+    font-size: 1.3rem;
+    color: var(--color-forest);
+}
+
+/* The ink-stamp signature element: rotated, translucent, bordered like
+   a rubber-stamp mark you'd see on a real bank passbook. */
+.ink-stamp {
+    position: absolute;
+    top: 18px;
+    right: -10px;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--color-stamp);
+    border: 3px solid var(--color-stamp);
+    border-radius: 8px;
+    padding: 6px 12px;
+    transform: rotate(9deg);
+    opacity: 0.85;
+    background: rgba(155, 58, 46, 0.04);
+}
+
+/* ---------------------------------------------------------------------
+   6. STATS STRIP
+--------------------------------------------------------------------- */
+.stats-strip {
+    background-color: var(--color-forest);
+    padding: 40px 0;
+}
+
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    text-align: center;
+}
+
+.stat-num {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--color-gold-light);
+}
+.stat-label {
+    font-size: 0.85rem;
+    color: #C9D6CD;
+}
+
+/* ---------------------------------------------------------------------
+   7. SECTION TITLES (shared)
+--------------------------------------------------------------------- */
+.section-title {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    text-align: center;
+    color: var(--color-ink);
+    margin-bottom: 10px;
+}
+.section-sub {
+    text-align: center;
+    color: #5B6B62;
+    margin-bottom: 48px;
+}
+
+/* ---------------------------------------------------------------------
+   8. FEATURES — presented as numbered ledger entries
+--------------------------------------------------------------------- */
+.features { padding: 90px 0; }
+
+.feature-ledger {
+    border-top: 2px solid var(--color-forest);
+}
+
+.feature-entry {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    gap: 24px;
+    padding: 28px 0;
+    border-bottom: 1px dashed var(--color-paper-line);
+}
+
+.entry-no {
+    font-family: var(--font-mono);
+    font-size: 1.4rem;
+    color: var(--color-gold);
+    font-weight: 600;
+}
+
+.entry-body h3 {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+    color: var(--color-forest);
+}
+.entry-body p {
+    color: #3A4A42;
+    max-width: 60ch;
+}
+
+/* ---------------------------------------------------------------------
+   9. HOW IT WORKS — a genuine 3-step sequence
+--------------------------------------------------------------------- */
+.how-it-works {
+    padding: 90px 0;
+    background-color: #EFE9D8;
+}
+
+.steps {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0;
+}
+
+.step {
+    flex: 1;
+    max-width: 260px;
+    text-align: center;
+    padding: 0 12px;
+}
+
+.step-num {
+    width: 44px;
+    height: 44px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    background-color: var(--color-forest);
+    color: var(--color-white);
+    font-family: var(--font-mono);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.step h3 {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    margin-bottom: 8px;
+    color: var(--color-ink);
+}
+.step p {
+    font-size: 0.92rem;
+    color: #5B6B62;
+}
+
+.step-connector {
+    flex: 0 0 60px;
+    height: 2px;
+    background-color: var(--color-paper-line);
+    margin-top: 22px;
+}
+
+/* ---------------------------------------------------------------------
+   10. SIP SPOTLIGHT SECTION
+--------------------------------------------------------------------- */
+.sip-spotlight {
+    background-color: var(--color-forest);
+    color: var(--color-white);
+    padding: 100px 0;
+}
+
+.sip-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.sip-copy h2 {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    margin: 16px 0 18px;
+}
+.sip-copy p { color: #D6E2D9; margin-bottom: 20px; max-width: 48ch; }
+
+.sip-list {
+    margin-bottom: 28px;
+}
+.sip-list li {
+    padding-left: 22px;
+    position: relative;
+    margin-bottom: 10px;
+    color: #E9EFE8;
+}
+.sip-list li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--color-gold-light);
+}
+
+.sip-spotlight .btn-primary {
+    background-color: var(--color-gold);
+    color: var(--color-forest-dark);
+}
+.sip-spotlight .btn-primary:hover {
+    background-color: var(--color-gold-light);
+}
+
+/* SIP projection card */
+.sip-card {
+    background-color: var(--color-white);
+    color: var(--color-ink);
+    border-radius: var(--radius);
+    padding: 30px;
+    box-shadow: var(--shadow-soft);
+}
+.sip-card-label {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: #5B6B62;
+}
+.sip-card-amt {
+    font-family: var(--font-mono);
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--color-forest);
+    margin-bottom: 20px;
+}
+
+.sip-bar-row {
+    display: grid;
+    grid-template-columns: 60px 1fr 90px;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    font-size: 0.85rem;
+}
+.sip-bar {
+    height: 10px;
+    background-color: var(--color-paper-line);
+    border-radius: 999px;
+    overflow: hidden;
+}
+.sip-bar-fill {
+    height: 100%;
+    background-color: var(--color-gold);
+    border-radius: 999px;
+}
+.sip-value {
+    font-family: var(--font-mono);
+    text-align: right;
+    color: var(--color-forest);
+    font-weight: 600;
+}
+.sip-disclaimer {
+    font-size: 0.75rem;
+    color: #8A968E;
+    margin-top: 12px;
+}
+
+/* ---------------------------------------------------------------------
+   11. TESTIMONIALS
+--------------------------------------------------------------------- */
+.testimonials { padding: 90px 0; }
+
+.testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    margin-top: 20px;
+}
+
+.testimonial {
+    background-color: var(--color-white);
+    border: 1px solid var(--color-paper-line);
+    border-left: 4px solid var(--color-gold);
+    border-radius: var(--radius);
+    padding: 26px;
+}
+.testimonial p {
+    font-style: italic;
+    margin-bottom: 14px;
+    color: var(--color-ink);
+}
+.testimonial footer {
+    font-size: 0.85rem;
+    color: #5B6B62;
+    font-weight: 600;
+}
+
+/* ---------------------------------------------------------------------
+   12. FINAL CTA
+--------------------------------------------------------------------- */
+.final-cta {
+    background-color: var(--color-gold);
+    padding: 80px 0;
+}
+.final-cta-container { text-align: center; }
+.final-cta h2 {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    color: var(--color-forest-dark);
+    margin-bottom: 10px;
+}
+.final-cta p {
+    color: #4A3A16;
+    margin-bottom: 26px;
+}
+.final-cta .btn-primary {
+    background-color: var(--color-forest-dark);
+}
+
+/* ---------------------------------------------------------------------
+   13. FOOTER
+--------------------------------------------------------------------- */
+.footer {
+    background-color: var(--color-forest-dark);
+    color: #B9C7BD;
+    padding: 60px 0 24px;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    margin-bottom: 20px;
+}
+
+.footer-brand .logo { color: var(--color-white); }
+.footer-tag {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: #8FA396;
+}
+
+.footer-links {
+    display: flex;
+    gap: 60px;
+}
+.footer-col h4 {
+    color: var(--color-gold-light);
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+}
+.footer-col a {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+}
+.footer-col a:hover { color: var(--color-gold-light); }
+
+.footer-copy {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #7D9084;
+}
+
+/* ---------------------------------------------------------------------
+   14. RESPONSIVE — TABLET & MOBILE
+--------------------------------------------------------------------- */
+@media (max-width: 960px) {
+    .hero-container { grid-template-columns: 1fr; }
+    .sip-container { grid-template-columns: 1fr; }
+    .stats-container { grid-template-columns: repeat(2, 1fr); }
+    .testimonial-grid { grid-template-columns: 1fr; }
+    .steps { flex-direction: column; align-items: center; }
+    .step-connector { display: none; }
+    .step { max-width: 100%; margin-bottom: 20px; }
+}
+
+@media (max-width: 720px) {
+    /* Collapse the nav into a slide-down mobile menu */
+    .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: var(--color-paper);
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        padding: 0 24px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.25s ease;
+        border-bottom: 2px solid var(--color-forest);
+    }
+    .nav-links a { padding: 14px 0; width: 100%; }
+
+    .nav-toggle:checked ~ .nav-links {
+        max-height: 400px;
+    }
+
+    .nav-burger {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+    }
+    .nav-burger span {
+        width: 24px;
+        height: 2px;
+        background-color: var(--color-forest);
+    }
+
+    .hero-copy h1 { font-size: 2.2rem; }
+    .footer-container { flex-direction: column; }
+    .footer-links { flex-wrap: wrap; gap: 30px; }
+}
+
+/* ---------------------------------------------------------------------
+   15. LOGIN FORM
+--------------------------------------------------------------------- */
+body {
+    background-color: #f7f4eb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.form-container {
+    background-color: #ffffff;
+    border: 2px solid #333333;
+    width: 320px;
+    padding: 40px 25px; /* Creates the vertical rectangular shape */
+    box-shadow: 4px 4px 0px #333333; /* Optional retro hard-shadow look */
+    display: flex;
+    flex-direction: column;
+}
+
+.form-container h2 {
+    font-size: 24px;
+    margin-top: 0;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.field {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.field label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.field input {
+    padding: 8px;
+    border: 1px solid #777;
+    border-radius: 4px;
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px;
+    font-weight: bold;
+    background-color: #e0e0e0;
+    border: 1px solid #777;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #d0d0d0;
 }
