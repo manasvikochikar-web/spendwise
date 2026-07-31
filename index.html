@@ -1,18 +1,366 @@
-<doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><strong>Spendwise</strong></title>
+    <title>Spendwise | Track Every Rupee. Grow Every Goal.</title>
+
+    <!-- ===============================================
+         GOOGLE FONTS
+         - Fraunces  : display serif, used for big headings (has an "ink stamp" character)
+         - IBM Plex Sans : body text, clean and readable
+         - IBM Plex Mono : used for all money figures / numbers, gives a "ledger register" feel
+    =============================================== -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="style.css">
 </head>
-<body>  
-    <div class="container">
-        <h1><strong>Welcome to Spendwise</strong></h1>
+<body>
 
-        <p>This is a sample webpage created to demonstrate HTML structure and styling.</p>
-        
-        <button class="btn">Click Me</button>
-    </div>
+    <!-- ===============================================
+         NAVBAR
+    =============================================== -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="#top" class="logo">
+                Spend<span class="logo-accent">wise</span>
+            </a>
+
+            <nav class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How it works</a>
+                <a href="#sip">SIP Goals</a>
+                <a href="calculator.html">Budget Calculator</a>
+                <a href="login.html" class="btn-outline">Log In</a>
+                <a href="signup.html" class="btn btn-primary btn-small">Get Started</a>
+            </nav>
+
+            <!-- Simple hamburger for mobile, toggled with a checkbox hack (no JS needed) -->
+            <input type="checkbox" id="nav-toggle" class="nav-toggle">
+            <label for="nav-toggle" class="nav-burger" aria-label="Open menu">
+                <span></span><span></span><span></span>
+            </label>
+        </div>
+    </header>
+
+    <!-- ===============================================
+         HERO SECTION
+         Styled like an open bank passbook page:
+         - left "page" = headline + copy + CTAs
+         - right "page" = a mocked passbook ledger card with stamped entries
+    =============================================== -->
+    <main id="top">
+        <section class="hero">
+            <div class="container hero-container">
+
+                <!-- Left side: the pitch -->
+                <div class="hero-copy">
+                    <span class="eyebrow">Personal Finance, Indian Style</span>
+
+                    <h1>
+                        Every rupee,
+                        <span class="hero-highlight">accounted for.</span>
+                    </h1>
+
+                    <p class="hero-sub">
+                        Spendwise turns your daily spending, monthly budgets and SIP investments
+                        into one clean ledger — so you always know where you stand, and where
+                        you're headed.
+                    </p>
+
+                    <div class="hero-actions">
+                        <a href="signup.html" class="btn btn-primary">Open your ledger — free</a>
+                        <a href="calculator.html" class="btn btn-secondary">Try the Budget Calculator</a>
+                    </div>
+
+                    <!-- Small trust strip under the CTAs -->
+                    <ul class="hero-trust">
+                        <li><strong>0%</strong> commission on SIPs</li>
+                        <li><strong>256-bit</strong> bank-grade encryption</li>
+                        <li><strong>UPI</strong> &amp; bank sync ready</li>
+                    </ul>
+                </div>
+
+                <!-- Right side: the "passbook" visual -->
+                <div class="hero-visual" aria-hidden="true">
+                    <div class="passbook">
+                        <div class="passbook-header">
+                            <span>SPENDWISE PASSBOOK</span>
+                            <span class="passbook-acc">A/C •• 4471</span>
+                        </div>
+
+                        <div class="passbook-row">
+                            <span class="p-desc">Salary credited</span>
+                            <span class="p-date">01 Jul</span>
+                            <span class="p-amt credit">+ ₹65,000</span>
+                        </div>
+                        <div class="passbook-row">
+                            <span class="p-desc">SIP — Nifty Index Fund</span>
+                            <span class="p-date">03 Jul</span>
+                            <span class="p-amt debit">− ₹5,000</span>
+                        </div>
+                        <div class="passbook-row">
+                            <span class="p-desc">Rent</span>
+                            <span class="p-date">05 Jul</span>
+                            <span class="p-amt debit">− ₹12,000</span>
+                        </div>
+                        <div class="passbook-row">
+                            <span class="p-desc">Groceries — Zepto</span>
+                            <span class="p-date">09 Jul</span>
+                            <span class="p-amt debit">− ₹1,840</span>
+                        </div>
+                        <div class="passbook-row">
+                            <span class="p-desc">Freelance payout</span>
+                            <span class="p-date">14 Jul</span>
+                            <span class="p-amt credit">+ ₹8,200</span>
+                        </div>
+
+                        <div class="passbook-balance">
+                            <span>Balance carried forward</span>
+                            <span class="balance-amt">₹54,360</span>
+                        </div>
+
+                        <!-- The "stamp" signature element -->
+                        <div class="ink-stamp">ON TRACK</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===============================================
+             STATS STRIP
+        =============================================== -->
+        <section class="stats-strip">
+            <div class="container stats-container">
+                <div class="stat">
+                    <span class="stat-num">₹42L+</span>
+                    <span class="stat-label">tracked by users every month</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-num">18,000+</span>
+                    <span class="stat-label">active budgets maintained</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-num">4.8/5</span>
+                    <span class="stat-label">average user rating</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-num">12%</span>
+                    <span class="stat-label">avg. rise in monthly savings</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===============================================
+             FEATURES SECTION
+             Presented as numbered ledger entries — this fits
+             the passbook theme AND the content is genuinely
+             a checklist of what the ledger records.
+        =============================================== -->
+        <section class="features" id="features">
+            <div class="container">
+                <h2 class="section-title">What Spendwise keeps a record of</h2>
+                <p class="section-sub">Four entries. One ledger. Zero guesswork.</p>
+
+                <div class="feature-ledger">
+
+                    <div class="feature-entry">
+                        <span class="entry-no">01</span>
+                        <div class="entry-body">
+                            <h3>Daily Expense Tracking</h3>
+                            <p>
+                                Log spends in seconds, auto-tag them as food, rent, travel or
+                                subscriptions, and see exactly where every rupee went — no
+                                spreadsheet required.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="feature-entry">
+                        <span class="entry-no">02</span>
+                        <div class="entry-body">
+                            <h3>Smart Monthly Budgets</h3>
+                            <p>
+                                Set a budget per category, get nudged before you overspend, and
+                                roll over what you save into next month's goals automatically.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="feature-entry">
+                        <span class="entry-no">03</span>
+                        <div class="entry-body">
+                            <h3>SIP &amp; Mutual Fund Planner</h3>
+                            <p>
+                                Model SIP returns with real Indian market assumptions, compare
+                                index funds, and track how each installment compounds over time.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="feature-entry">
+                        <span class="entry-no">04</span>
+                        <div class="entry-body">
+                            <h3>Reports Worth Reading</h3>
+                            <p>
+                                Clean, Power BI-style dashboards that turn a month of transactions
+                                into three charts you'll actually check.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ===============================================
+             HOW IT WORKS
+             This IS a real sequence, so numbered steps make sense here.
+        =============================================== -->
+        <section class="how-it-works" id="how-it-works">
+            <div class="container">
+                <h2 class="section-title">How it works</h2>
+                <p class="section-sub">Three steps between you and a clearer bank balance.</p>
+
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-num">1</div>
+                        <h3>Connect or enter manually</h3>
+                        <p>Sync your bank / UPI, or log expenses by hand — your call, your data.</p>
+                    </div>
+                    <div class="step-connector" aria-hidden="true"></div>
+                    <div class="step">
+                        <div class="step-num">2</div>
+                        <h3>Set your budgets &amp; SIPs</h3>
+                        <p>Tell Spendwise your monthly limits and investment goals, once.</p>
+                    </div>
+                    <div class="step-connector" aria-hidden="true"></div>
+                    <div class="step">
+                        <div class="step-num">3</div>
+                        <h3>Get a monthly ledger</h3>
+                        <p>Every month closes with a clean summary — like a passbook update.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===============================================
+             SIP / GOALS SPOTLIGHT SECTION
+        =============================================== -->
+        <section class="sip-spotlight" id="sip">
+            <div class="container sip-container">
+                <div class="sip-copy">
+                    <span class="eyebrow eyebrow-light">Long-Term Wealth</span>
+                    <h2>Watch your SIPs compound, month after month.</h2>
+                    <p>
+                        Spendwise's planner uses real fund categories and historical Indian
+                        market averages, so your projections stay grounded — not inflated.
+                    </p>
+                    <ul class="sip-list">
+                        <li>Compare index funds, hybrid funds &amp; ELSS side by side</li>
+                        <li>See year-by-year compounding, not just a final number</li>
+                        <li>Get alerts if a SIP falls behind your target</li>
+                    </ul>
+                    <a href="calculator.html" class="btn btn-primary">Open the SIP Calculator</a>
+                </div>
+
+                <div class="sip-card">
+                    <p class="sip-card-label">Monthly SIP</p>
+                    <p class="sip-card-amt">₹5,000</p>
+                    <div class="sip-bar-row">
+                        <span>Year 1</span>
+                        <div class="sip-bar"><div class="sip-bar-fill" style="width:18%"></div></div>
+                        <span class="sip-value">₹62,400</span>
+                    </div>
+                    <div class="sip-bar-row">
+                        <span>Year 5</span>
+                        <div class="sip-bar"><div class="sip-bar-fill" style="width:52%"></div></div>
+                        <span class="sip-value">₹4.1L</span>
+                    </div>
+                    <div class="sip-bar-row">
+                        <span>Year 10</span>
+                        <div class="sip-bar"><div class="sip-bar-fill" style="width:100%"></div></div>
+                        <span class="sip-value">₹11.6L</span>
+                    </div>
+                    <p class="sip-disclaimer">*Illustrative, assumes 12% avg. annual return. Not investment advice.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===============================================
+             TESTIMONIALS
+        =============================================== -->
+        <section class="testimonials">
+            <div class="container">
+                <h2 class="section-title">People who closed the month knowing exactly where they stood</h2>
+
+                <div class="testimonial-grid">
+                    <blockquote class="testimonial">
+                        <p>"I finally stopped wondering where my salary disappeared to by the 20th."</p>
+                        <footer>— Priya, Software Engineer, Pune</footer>
+                    </blockquote>
+                    <blockquote class="testimonial">
+                        <p>"The SIP planner is the reason I started investing instead of just saving."</p>
+                        <footer>— Rohan, Product Analyst, Mumbai</footer>
+                    </blockquote>
+                    <blockquote class="testimonial">
+                        <p>"Feels like reading a bank passbook, not fighting an Excel sheet."</p>
+                        <footer>— Ananya, Student, Bengaluru</footer>
+                    </blockquote>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===============================================
+             FINAL CALL TO ACTION
+        =============================================== -->
+        <section class="final-cta">
+            <div class="container final-cta-container">
+                <h2>Start your ledger today.</h2>
+                <p>Free forever for personal use. No card required.</p>
+                <a href="signup.html" class="btn btn-primary btn-large">Create your Spendwise account</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===============================================
+         FOOTER
+    =============================================== -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-brand">
+                <p class="logo">Spend<span class="logo-accent">wise</span></p>
+                <p class="footer-tag">Every rupee, accounted for.</p>
+            </div>
+
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h4>Product</h4>
+                    <a href="#features">Features</a>
+                    <a href="calculator.html">Budget Calculator</a>
+                    <a href="#sip">SIP Planner</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <a href="#">About</a>
+                    <a href="#">Contact</a>
+                    <a href="#">Privacy Policy</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Account</h4>
+                    <a href="login.html">Log In</a>
+                    <a href="signup.html">Sign Up</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <p class="footer-copy">&copy; 2026 Spendwise. All rights reserved.</p>
+        </div>
+    </footer>
+
 </body>
 </html>
